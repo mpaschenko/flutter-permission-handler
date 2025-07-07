@@ -6,6 +6,7 @@
 //
 
 #import "NotificationPermissionStrategy.h"
+#import <UIKit/UIKit.h>
 
 #if PERMISSION_NOTIFICATIONS
 
@@ -38,6 +39,15 @@
     authorizationOptions += UNAuthorizationOptionBadge;
     [center requestAuthorizationWithOptions:(authorizationOptions) completionHandler:^(BOOL granted, NSError * _Nullable error) {
       if (error != nil || !granted) {
+      NSLog(@"Failed to set notification permission: %@", message);
+
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Permission Error"
+                                                            message:message
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+
         completionHandler(PermissionStatusPermanentlyDenied);
         return;
       }
